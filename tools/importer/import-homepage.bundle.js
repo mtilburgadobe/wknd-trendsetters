@@ -48,7 +48,7 @@ var CustomImportScript = (() => {
     const images = Array.from(element.querySelectorAll(".grid-layout img.cover-image"));
     const cells = [];
     if (images.length > 0) {
-      cells.push([images[0]]);
+      cells.push([images]);
     }
     const contentCell = [];
     if (heading) contentCell.push(heading);

@@ -7,12 +7,12 @@
  * Source: https://www.wknd-trendsetters.site/
  * Selector: header.section.secondary-section
  *
- * Hero block structure (from library):
- * Row 1: background image (optional)
+ * Hero block structure:
+ * Row 1: image grid (all hero images in one cell)
  * Row 2: heading + subheading + CTAs
  *
  * Source structure: two-column grid with H1, paragraph, buttons on left;
- * 3 images on right. We use the first image as background, content as row 2.
+ * 3 images on right.
  */
 export default function parse(element, { document }) {
   // Extract content from source DOM
@@ -23,9 +23,9 @@ export default function parse(element, { document }) {
 
   const cells = [];
 
-  // Row 1: first image as background
+  // Row 1: all images in one cell for image grid
   if (images.length > 0) {
-    cells.push([images[0]]);
+    cells.push([images]);
   }
 
   // Row 2: heading + description + CTAs
