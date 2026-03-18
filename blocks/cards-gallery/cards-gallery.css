@@ -1,19 +1,21 @@
+/* Cards Gallery - image-only grid, no text, rounded images */
+
 .cards-gallery > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--grid-gap-sm);
 }
 
 .cards-gallery > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 
 .cards-gallery .cards-gallery-card-body {
-  margin: 16px;
+  display: none;
 }
 
 .cards-gallery .cards-gallery-card-image {
@@ -22,6 +24,13 @@
 
 .cards-gallery > ul > li img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
+  display: block;
+}
+
+@media (width >= 900px) {
+  .cards-gallery > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

@@ -1,3 +1,9 @@
+/* Hero Banner - full-width background image with dark overlay, heading, text, CTA */
+
+.hero-banner-container {
+  background-color: var(--dark-color);
+}
+
 .hero-banner-container .hero-banner-wrapper {
   max-width: unset;
   padding: 0;
@@ -5,33 +11,19 @@
 
 .hero-banner {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
-}
-
-.hero-banner h1,
-.hero-banner h2,
-.hero-banner h3,
-.hero-banner h4,
-.hero-banner h5,
-.hero-banner h6,
-.hero-banner p {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
-}
-
-.hero-banner.no-image * {
-  color: var(--text-color);
+  padding: var(--spacing-section) var(--spacing-l);
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  margin: 0 var(--spacing-l);
 }
 
 .hero-banner picture {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
 }
 
 .hero-banner img {
@@ -40,8 +32,53 @@
   height: 100%;
 }
 
+/* dark overlay */
+.hero-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 50%);
+  z-index: 1;
+}
+
+.hero-banner > div:last-child {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.hero-banner h1,
+.hero-banner h2,
+.hero-banner h3,
+.hero-banner h4,
+.hero-banner h5,
+.hero-banner h6 {
+  color: var(--background-color);
+  margin: 0 0 var(--spacing-m);
+}
+
+.hero-banner p {
+  color: rgb(255 255 255 / 85%);
+  margin: 0 0 var(--spacing-l);
+  font-size: var(--body-font-size-l);
+  line-height: 1.6;
+}
+
+.hero-banner a.button {
+  border-color: var(--background-color);
+  background-color: transparent;
+  color: var(--background-color);
+}
+
+.hero-banner a.button:hover {
+  background-color: var(--background-color);
+  color: var(--dark-color);
+}
+
 @media (width >= 900px) {
   .hero-banner {
-    padding: 40px 32px;
+    padding: var(--spacing-section) var(--spacing-xxl);
+    min-height: 500px;
+    margin: 0 var(--spacing-xl);
   }
 }

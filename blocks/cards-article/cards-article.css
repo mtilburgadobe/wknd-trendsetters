@@ -1,19 +1,52 @@
+/* Cards Article - article cards with image, tag, date, linked heading */
+
 .cards-article > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--grid-gap-md);
 }
 
 .cards-article > ul > li {
-  border: 1px solid #dadada;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
   background-color: var(--background-color);
 }
 
 .cards-article .cards-article-card-body {
-  margin: 16px;
+  padding: var(--spacing-m);
+}
+
+.cards-article .cards-article-card-body p {
+  margin: 0 0 var(--spacing-xs);
+  font-size: var(--body-font-size-s);
+  color: var(--text-color-secondary);
+}
+
+.cards-article .cards-article-card-body p:first-child {
+  display: inline-block;
+  background-color: var(--accent-color);
+  padding: var(--spacing-xxs) var(--spacing-s);
+  border-radius: var(--border-radius-pill);
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-xs);
+}
+
+.cards-article .cards-article-card-body h3 {
+  color: var(--text-color);
+  margin: var(--spacing-xs) 0 0;
+}
+
+.cards-article .cards-article-card-body h3 a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .cards-article .cards-article-card-image {
@@ -24,4 +57,11 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  display: block;
+}
+
+@media (width >= 900px) {
+  .cards-article > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

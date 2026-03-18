@@ -1,10 +1,15 @@
+/* Columns Featured - image + heading/author metadata side-by-side */
+
 .columns-featured > div {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-l);
 }
 
 .columns-featured img {
   width: 100%;
+  border-radius: var(--border-radius);
+  object-fit: cover;
 }
 
 .columns-featured > div > div {
@@ -19,11 +24,21 @@
   display: block;
 }
 
+.columns-featured h2 {
+  margin-top: var(--spacing-m);
+}
+
+.columns-featured p {
+  margin: var(--spacing-xs) 0;
+  font-size: var(--body-font-size-s);
+  color: var(--text-color-secondary);
+}
+
 @media (width >= 900px) {
   .columns-featured > div {
+    flex-direction: row;
     align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+    gap: var(--spacing-xxl);
   }
 
   .columns-featured > div > div {

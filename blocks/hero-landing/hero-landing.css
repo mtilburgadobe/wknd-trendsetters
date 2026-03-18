@@ -1,47 +1,82 @@
+/* Hero Landing - two-column: heading/text/buttons left, image grid right */
+
+.hero-landing-container {
+  background-color: var(--light-color);
+}
+
 .hero-landing-container .hero-landing-wrapper {
-  max-width: unset;
-  padding: 0;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--spacing-section) var(--spacing-l);
 }
 
-.hero-landing {
-  position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+.hero-landing > div:first-child {
+  display: none;
 }
 
-.hero-landing h1,
-.hero-landing h2,
-.hero-landing h3,
-.hero-landing h4,
-.hero-landing h5,
-.hero-landing h6,
-.hero-landing p {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+.hero-landing > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-s);
 }
 
-.hero-landing.no-image * {
-  color: var(--text-color);
-}
-
-.hero-landing picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
-}
-
-.hero-landing img {
-  object-fit: cover;
+/* Heading and description take full width */
+.hero-landing > div:last-child > div:first-child,
+.hero-landing > div:last-child > div:nth-child(2) {
   width: 100%;
-  height: 100%;
+}
+
+.hero-landing h1 {
+  margin: 0;
+}
+
+.hero-landing p {
+  margin: 0;
+  font-size: var(--body-font-size-l);
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.hero-landing .button-wrapper {
+  margin: 0;
+}
+
+.hero-landing a.button {
+  display: inline-block;
+}
+
+/* Second button as secondary/outline */
+.hero-landing > div:last-child > div:nth-child(n+4) a.button {
+  border-color: var(--dark-color);
+  background-color: transparent;
+  color: var(--dark-color);
 }
 
 @media (width >= 900px) {
+  .hero-landing-container .hero-landing-wrapper {
+    padding: var(--spacing-section) var(--spacing-xl);
+  }
+
   .hero-landing {
-    padding: 40px 32px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: var(--spacing-xxl);
+  }
+
+  .hero-landing > div:first-child {
+    display: block;
+    flex: 1;
+  }
+
+  .hero-landing > div:first-child img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    object-fit: cover;
+  }
+
+  .hero-landing > div:last-child {
+    flex: 1;
   }
 }
