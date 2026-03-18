@@ -1,0 +1,52 @@
+{
+  "name": "Hero Article",
+  "description": "Blog post hero block with a side-by-side layout: hero image on the left, article metadata (title, author, date, read time, category tag) on the right.",
+  "model": {
+    "id": "hero-article",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Hero Image",
+        "multi": false,
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "imageAlt",
+        "label": "Image Alt Text",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Article Title",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "author",
+        "label": "Author Name",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "publishDate",
+        "label": "Publish Date",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "readTime",
+        "label": "Read Time",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "category",
+        "label": "Category Tag",
+        "valueType": "string"
+      }
+    ]
+  }
+}

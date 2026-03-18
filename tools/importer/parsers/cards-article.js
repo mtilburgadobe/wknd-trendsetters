@@ -4,24 +4,43 @@
 /**
  * Parser: cards-article
  * Base block: cards
- * Source: https://www.wknd-trendsetters.site/
- * Selector: .section.secondary-section .grid-layout.desktop-4-column.grid-gap-md
+ * Sources:
+ *   - https://www.wknd-trendsetters.site/ (homepage template)
+ *     Selector: .section.secondary-section .grid-layout.desktop-4-column.grid-gap-md
+ *   - https://www.wknd-trendsetters.site/blog (blog-index template)
+ *     Selector: section#articles .grid-layout.desktop-4-column
+ * Generated: 2026-03-18
  *
  * Cards block structure (from library):
- * Each row: [image | text content (heading, description, CTA)]
+ *   2 columns per row: [image | text content]
+ *   Text content can include: title (heading), description, CTA (link)
  *
- * Source: 4 article cards, each with image, tag, date, heading, linked
+ * Source structure: article cards (4 on homepage, 6 on blog-index)
+ *   Each card is an <a class="article-card card-link"> with:
+ *     .article-card-image > img.cover-image
+ *     .article-card-body > .article-card-meta > span.tag + span.paragraph-sm.utility-text-secondary (date)
+ *     .article-card-body > h3.h4-heading
  */
 export default function parse(element, { document }) {
-  const articleCards = Array.from(element.querySelectorAll('a.article-card'));
+  // Extract all article cards (from live DOM: a.article-card or a.card-link)
+  const articleCards = Array.from(element.querySelectorAll('a.article-card, a.card-link'));
 
   const cells = [];
 
   articleCards.forEach((card) => {
-    const img = card.querySelector('.article-card-image img.cover-image');
-    const tag = card.querySelector('.tag');
-    const date = card.querySelector('.paragraph-sm.utility-text-secondary');
+    // Image (from live DOM: .article-card-image img.cover-image)
+    const img = card.querySelector('.article-card-image img.cover-image, img.cover-image');
+
+    // Category tag (from live DOM: .article-card-meta span.tag)
+    const tag = card.querySelector('.article-card-meta .tag, .tag');
+
+    // Date (from live DOM: .article-card-meta .paragraph-sm.utility-text-secondary)
+    const date = card.querySelector('.article-card-meta .paragraph-sm.utility-text-secondary, .paragraph-sm.utility-text-secondary');
+
+    // Heading (from live DOM: h3.h4-heading)
     const heading = card.querySelector('.h4-heading, h3');
+
+    // Link href from the card anchor itself
     const href = card.getAttribute('href');
 
     const contentCell = [];

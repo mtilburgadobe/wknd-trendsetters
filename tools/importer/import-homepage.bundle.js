@@ -42,41 +42,84 @@ var CustomImportScript = (() => {
 
   // tools/importer/parsers/hero-landing.js
   function parse(element, { document: document2 }) {
+    const images = Array.from(element.querySelectorAll(".grid-layout img.cover-image, img.cover-image"));
     const heading = element.querySelector("h1, .h1-heading");
-    const description = element.querySelector(".subheading, p.subheading");
-    const buttons = Array.from(element.querySelectorAll(".button-group a.button"));
-    const images = Array.from(element.querySelectorAll(".grid-layout img.cover-image"));
+    const subheading = element.querySelector(".subheading, p.subheading");
+    const descriptionParagraphs = Array.from(element.querySelectorAll("p")).filter((p) => {
+      if (p === subheading) return false;
+      if (p.closest(".button-group")) return false;
+      if (p.classList.contains("subheading")) return false;
+      const text = p.textContent.trim();
+      return text.length > 0 && !p.querySelector("a.button");
+    });
+    const buttons = Array.from(element.querySelectorAll(".button-group a.button, a.button"));
     const cells = [];
     if (images.length > 0) {
-      cells.push([images]);
+      const imageCell = document2.createElement("div");
+      images.forEach((img) => imageCell.append(img));
+      cells.push([imageCell]);
     }
-    const contentCell = [];
-    if (heading) contentCell.push(heading);
-    if (description) contentCell.push(description);
-    contentCell.push(...buttons);
-    cells.push(contentCell);
+    const contentContainer = document2.createElement("div");
+    if (heading) contentContainer.append(heading);
+    if (subheading) contentContainer.append(subheading);
+    descriptionParagraphs.forEach((p) => contentContainer.append(p));
+    buttons.forEach((btn) => {
+      const p = document2.createElement("p");
+      p.append(btn);
+      contentContainer.append(p);
+    });
+    cells.push([contentContainer]);
     const block = WebImporter.Blocks.createBlock(document2, { name: "hero-landing", cells });
     element.replaceWith(block);
   }
 
   // tools/importer/parsers/columns-featured.js
   function parse2(element, { document: document2 }) {
-    const image = element.querySelector("img.cover-image");
-    const heading = element.querySelector(".h2-heading, h2");
-    const authorName = element.querySelector(".utility-text-black, .paragraph-sm.utility-text-black");
-    const dateEl = element.querySelector(".utility-margin-top-0-5rem .utility-text-secondary");
+    const image = element.querySelector('img.cover-image, img[class*="cover"]');
     const rightContent = [];
+    const breadcrumbLinks = Array.from(element.querySelectorAll(".breadcrumbs a.text-link, .breadcrumbs a"));
+    if (breadcrumbLinks.length > 0) {
+      const breadcrumbP = document2.createElement("p");
+      breadcrumbLinks.forEach((link, idx) => {
+        if (idx > 0) breadcrumbP.append(document2.createTextNode(" > "));
+        breadcrumbP.append(link);
+      });
+      rightContent.push(breadcrumbP);
+    }
+    const tag = element.querySelector(".flex-horizontal span.tag");
+    if (tag) {
+      const tagP = document2.createElement("p");
+      tagP.textContent = tag.textContent.trim();
+      rightContent.push(tagP);
+      const tagContainer = tag.closest(".flex-horizontal");
+      const dateEl = tagContainer ? tagContainer.querySelector(".paragraph-sm.utility-text-secondary") : null;
+      if (dateEl) {
+        const dateP = document2.createElement("p");
+        dateP.textContent = dateEl.textContent.trim();
+        rightContent.push(dateP);
+      }
+    }
+    const heading = element.querySelector(".h2-heading, h2");
     if (heading) rightContent.push(heading);
+    const authorName = element.querySelector(".paragraph-sm.utility-text-black");
     if (authorName) {
       const byLine = document2.createElement("p");
-      byLine.textContent = `By ${authorName.textContent.trim()}`;
+      byLine.textContent = "By " + authorName.textContent.trim();
       rightContent.push(byLine);
     }
-    if (dateEl) {
-      const dateLine = document2.createElement("p");
-      dateLine.textContent = dateEl.textContent.trim();
-      rightContent.push(dateLine);
+    const readTimeContainer = element.querySelector(".flex-horizontal.utility-margin-top-0-5rem");
+    if (readTimeContainer) {
+      const metaSpans = Array.from(readTimeContainer.querySelectorAll(".paragraph-sm"));
+      if (metaSpans.length > 0) {
+        const metaLine = document2.createElement("p");
+        metaLine.textContent = metaSpans.map((el) => el.textContent.trim()).filter(Boolean).join(" ");
+        rightContent.push(metaLine);
+      }
     }
+    const description = element.querySelector("p.paragraph-lg");
+    if (description) rightContent.push(description);
+    const ctaLink = element.querySelector(".button-group a.button");
+    if (ctaLink) rightContent.push(ctaLink);
     const cells = [];
     cells.push([image || "", rightContent]);
     const block = WebImporter.Blocks.createBlock(document2, { name: "columns-featured", cells });
@@ -102,10 +145,10 @@ var CustomImportScript = (() => {
     tabPanes.forEach((pane, i) => {
       const button = tabButtons[i];
       const labelName = button ? button.querySelector("strong") : null;
-      const label = labelName ? labelName.textContent.trim() : `Tab ${i + 1}`;
+      const label = labelName ? labelName.textContent.trim() : "Tab " + (i + 1);
       const img = pane.querySelector("img.cover-image");
-      const name = pane.querySelector(".paragraph-xl strong");
-      const role = pane.querySelector(".paragraph-xl + div");
+      const name = pane.querySelector(".paragraph-xl strong, .paragraph-xl.utility-margin-bottom-0 strong");
+      const role = pane.querySelector(".paragraph-xl.utility-margin-bottom-0 + div, .paragraph-xl + div");
       const quote = pane.querySelector("p.paragraph-xl");
       const content = [];
       if (img) content.push(img);
@@ -130,12 +173,12 @@ var CustomImportScript = (() => {
 
   // tools/importer/parsers/cards-article.js
   function parse5(element, { document: document2 }) {
-    const articleCards = Array.from(element.querySelectorAll("a.article-card"));
+    const articleCards = Array.from(element.querySelectorAll("a.article-card, a.card-link"));
     const cells = [];
     articleCards.forEach((card) => {
-      const img = card.querySelector(".article-card-image img.cover-image");
-      const tag = card.querySelector(".tag");
-      const date = card.querySelector(".paragraph-sm.utility-text-secondary");
+      const img = card.querySelector(".article-card-image img.cover-image, img.cover-image");
+      const tag = card.querySelector(".article-card-meta .tag, .tag");
+      const date = card.querySelector(".article-card-meta .paragraph-sm.utility-text-secondary, .paragraph-sm.utility-text-secondary");
       const heading = card.querySelector(".h4-heading, h3");
       const href = card.getAttribute("href");
       const contentCell = [];
@@ -189,10 +232,10 @@ var CustomImportScript = (() => {
         questionCell.push(p);
       }
       const answerCell = [];
-      answerParagraphs.forEach((p) => {
-        const para = document2.createElement("p");
-        para.textContent = p.textContent.trim();
-        answerCell.push(para);
+      answerParagraphs.forEach((para) => {
+        const p = document2.createElement("p");
+        p.textContent = para.textContent.trim();
+        answerCell.push(p);
       });
       cells.push([
         questionCell.length > 0 ? questionCell : "",
@@ -261,29 +304,13 @@ var CustomImportScript = (() => {
   // tools/importer/transformers/wknd-trendsetters-sections.js
   var H2 = { before: "beforeTransform", after: "afterTransform" };
   function transform2(hookName, element, payload) {
-    const { template } = payload;
-    if (!template || !template.sections || template.sections.length < 2) return;
-    const doc = element.ownerDocument || document;
-    const sections = template.sections;
-    if (hookName === H2.before) {
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if (i === 0) continue;
-        const section = sections[i];
-        const selectors = Array.isArray(section.selector) ? section.selector : [section.selector];
-        let sectionEl = null;
-        for (const sel of selectors) {
-          sectionEl = element.querySelector(sel);
-          if (sectionEl) break;
-        }
-        if (!sectionEl) continue;
-        const hr = doc.createElement("hr");
-        sectionEl.before(hr);
-      }
-    }
     if (hookName === H2.after) {
+      const { template } = payload;
+      if (!template || !template.sections || template.sections.length < 2) return;
+      const doc = element.ownerDocument || document;
+      const sections = template.sections;
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
-        if (!section.style) continue;
         const selectors = Array.isArray(section.selector) ? section.selector : [section.selector];
         let sectionEl = null;
         for (const sel of selectors) {
@@ -291,11 +318,17 @@ var CustomImportScript = (() => {
           if (sectionEl) break;
         }
         if (!sectionEl) continue;
-        const metaBlock = WebImporter.Blocks.createBlock(doc, {
-          name: "Section Metadata",
-          cells: { style: section.style }
-        });
-        sectionEl.append(metaBlock);
+        if (section.style) {
+          const metaBlock = WebImporter.Blocks.createBlock(doc, {
+            name: "Section Metadata",
+            cells: { style: section.style }
+          });
+          sectionEl.append(metaBlock);
+        }
+        if (i > 0) {
+          const hr = doc.createElement("hr");
+          sectionEl.before(hr);
+        }
       }
     }
   }

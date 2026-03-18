@@ -1,0 +1,19 @@
+{
+  "variantName": "hero-article",
+  "baseBlock": "hero",
+  "source": "Block Collection (hero) + custom adaptation",
+  "description": "Blog post hero variant with side-by-side image and article metadata layout. Left column shows a hero image with 3:2 aspect ratio. Right column shows article title (H1), author byline, publication date, read time, and category tag.",
+  "createdFor": "blog-post template",
+  "visualCharacteristics": {
+    "layout": "two-column, side-by-side (image left, metadata right)",
+    "imageStyle": "3:2 aspect ratio, rounded corners",
+    "typography": "large heading, small secondary text for metadata",
+    "accentElements": "colored category tag badge",
+    "background": "white/default"
+  },
+  "similarity": {
+    "hero": 0.3,
+    "hero-landing": 0.45,
+    "hero-banner": 0.2
+  }
+}

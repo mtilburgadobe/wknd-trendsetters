@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://www.wknd-trendsetters.site/blog",
+  "path": "blog",
+  "timestamp": "2026-03-18T20:11:36.832Z",
+  "title": "Blog — WKND Trendsetters",
+  "template": "blog-index",
+  "blocks": [
+    "hero-blog",
+    "columns-featured",
+    "cards-article"
+  ]
+}

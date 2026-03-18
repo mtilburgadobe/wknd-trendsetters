@@ -4,14 +4,19 @@
 /**
  * Parser: tabs-testimonial
  * Base block: tabs
- * Source: https://www.wknd-trendsetters.site/
+ * Source: https://www.wknd-trendsetters.site/case-studies
  * Selector: .tabs-wrapper
+ * Generated: 2026-03-18
  *
  * Tabs block structure (from library):
- * Each row: [tab-label | tab-content]
+ *   2 columns per row: [tab-label | tab-content]
+ *   Each row represents a single tab
  *
- * Source: 4 tab panes, each with image + name + role + quote.
- * Tab menu buttons have name + role as labels.
+ * Source structure:
+ *   .tabs-content contains .tab-pane elements (4 total)
+ *   Each pane: grid with img.cover-image, .paragraph-xl strong (name),
+ *     div after name (role), p.paragraph-xl (quote)
+ *   .tab-menu contains .tab-menu-link buttons with strong (name)
  */
 export default function parse(element, { document }) {
   const tabPanes = Array.from(element.querySelectorAll('.tab-pane'));
@@ -20,15 +25,22 @@ export default function parse(element, { document }) {
   const cells = [];
 
   tabPanes.forEach((pane, i) => {
-    // Tab label from button text
+    // Tab label: person name from button (from captured DOM: .tab-menu-link strong)
     const button = tabButtons[i];
     const labelName = button ? button.querySelector('strong') : null;
-    const label = labelName ? labelName.textContent.trim() : `Tab ${i + 1}`;
+    const label = labelName ? labelName.textContent.trim() : 'Tab ' + (i + 1);
 
-    // Tab content: image, name, role, quote
+    // Tab content extraction from pane
+    // Image (from captured DOM: img.cover-image)
     const img = pane.querySelector('img.cover-image');
-    const name = pane.querySelector('.paragraph-xl strong');
-    const role = pane.querySelector('.paragraph-xl + div');
+
+    // Name (from captured DOM: .paragraph-xl strong, .paragraph-xl.utility-margin-bottom-0 strong)
+    const name = pane.querySelector('.paragraph-xl strong, .paragraph-xl.utility-margin-bottom-0 strong');
+
+    // Role (from captured DOM: div after .paragraph-xl.utility-margin-bottom-0)
+    const role = pane.querySelector('.paragraph-xl.utility-margin-bottom-0 + div, .paragraph-xl + div');
+
+    // Quote (from captured DOM: p.paragraph-xl — the paragraph, not the div with name)
     const quote = pane.querySelector('p.paragraph-xl');
 
     const content = [];

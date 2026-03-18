@@ -1,0 +1,13 @@
+{
+  "definitions": [
+    {
+      "id": "cards-feature",
+      "model": "cards-feature",
+      "tag": "div",
+      "label": "Cards Feature",
+      "description": "Feature cards with image, heading, and description in a 3-column grid without borders",
+      "path": "/blocks/cards-feature/cards-feature",
+      "group": "Cards"
+    }
+  ]
+}

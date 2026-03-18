@@ -1,0 +1,104 @@
+/* Hero Article - blog post hero with side-by-side image and article metadata */
+
+.hero-article-container .hero-article-wrapper {
+  max-width: var(--content-max-width, 1200px);
+  margin: 0 auto;
+  padding: var(--spacing-section, 64px) var(--spacing-l, 24px);
+}
+
+/* Mobile: stack image on top, content below */
+.hero-article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l, 24px);
+}
+
+/* Image column */
+.hero-article-image {
+  flex: 1;
+}
+
+.hero-article-image > div {
+  display: block;
+}
+
+.hero-article-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--border-radius, 8px);
+}
+
+/* Content column */
+.hero-article-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-article-content > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 8px);
+}
+
+/* Title */
+.hero-article h1 {
+  margin: var(--spacing-s, 12px) 0 0;
+  font-size: var(--heading-font-size-l, 2rem);
+  line-height: 1.15;
+}
+
+/* Author line */
+.hero-article .hero-article-author {
+  margin: var(--spacing-s, 12px) 0 0;
+  font-size: var(--body-font-size-s, 0.875rem);
+  color: var(--text-color);
+}
+
+/* Date / read time */
+.hero-article .hero-article-date {
+  font-size: var(--body-font-size-s, 0.875rem);
+  color: var(--secondary-color, #666);
+  margin: 0;
+}
+
+/* Category tag */
+.hero-article .hero-article-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: var(--body-font-size-xs, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: var(--accent-color, #e6ff00);
+  color: var(--dark-color, #000);
+  margin-top: var(--spacing-s, 12px);
+  width: fit-content;
+}
+
+/* Desktop: side-by-side layout */
+@media (width >= 900px) {
+  .hero-article-container .hero-article-wrapper {
+    padding: var(--spacing-section, 64px) var(--spacing-xl, 32px);
+  }
+
+  .hero-article {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-xxl, 48px);
+  }
+
+  .hero-article-image {
+    flex: 1;
+  }
+
+  .hero-article-content {
+    flex: 1;
+  }
+
+  .hero-article h1 {
+    font-size: var(--heading-font-size-xl, 2.5rem);
+  }
+}
